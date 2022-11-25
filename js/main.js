@@ -128,6 +128,9 @@ function obtenerDatos(cantidad,div){
 
     div.appendChild(subtotalPedido);
     div.appendChild(totalPedido);
+
+    const guardarProductosLocal =JSON.stringify(productos);
+    localStorage.setItem('productos',guardarProductosLocal);
 }
 
 /* function imprimirDatos(productos,div){
