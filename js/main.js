@@ -18,6 +18,7 @@ formulario.addEventListener('submit',(evt)=>{
     evt.preventDefault();
     nombre=document.getElementById("inputName").value;
     cantidad=document.getElementById("inputCantidad").value;
+    let products;
 
     console.log(nombre);
     console.log(cantidad);
@@ -34,6 +35,13 @@ formulario.addEventListener('submit',(evt)=>{
     div.appendChild(h3Nombre);
     div.appendChild(formProductos);
     crearFormProductos(cantidad,formProductos);
+    const formularioFinal =document.querySelector(".formProductos");
+    formularioFinal.addEventListener("submit",(evt)=>{
+        evt.preventDefault();
+        obtenerDatos(cantidad,div);
+    })
+   
+    /* imprimirDatos(products,div) */
 
      let hey=document.body;
     console.log(hey);
@@ -83,6 +91,68 @@ function crearFormProductos(cantidad,formProductos){
     formProductos.appendChild(submitProductos);
 
 }
+
+function obtenerDatos(cantidad,div){
+    //Declaración de variables
+    let precio;
+    let nombreProducto;
+
+    for(let i=1;i<=cantidad;i++){
+        let x=false;
+        do{
+            nombreProducto=document.getElementById("inputProducto" + i).value;
+            precio=Number(document.getElementById("inputPrice" + i).value);
+            if(isNaN(precio)){
+                let alerta=document.createElement("h3");
+                alerta.textContent="El precio del producto " + i + " no es una cifra, Intenta de nuevo";
+                div.appendChild(alerta);
+                return null;
+            }else{
+                x=true;
+            }
+        }while(x != true);    
+        productos.push(new Producto(nombreProducto,precio));
+    }
+    let resultado=document.createElement("h4");
+    let totalPedido=document.createElement("h4");
+    let subtotalPedido=document.createElement("h4");
+                
+    productos.forEach(producto=>{
+        subtotal=subtotal+producto.precio;
+        resultado.textContent=`${producto.nombre} tuvo un precio de: ${producto.precio}`;
+        div.appendChild(resultado);
+    })
+    total=subtotal*iva;
+    subtotalPedido.textContent="El subtotal(SIN IVA) es de: " + subtotal;
+    totalPedido.textContent="El total fue de: " + total;
+
+    div.appendChild(subtotalPedido);
+    div.appendChild(totalPedido);
+}
+
+/* function imprimirDatos(productos,div){
+    if(productos == null){
+        return null;
+    }else{
+        let resultado=document.createElement("h4");
+        let totalPedido=document.createElement("h4");
+        let subtotalPedido=document.createElement("h4");
+                
+        productos.forEach(producto=>{
+            subtotal=subtotal+producto.precio;
+            resultado.textContent=`${producto.nombre} tuvo un precio de: ${producto.precio}`;
+            div.appendChild(resultado);
+        })
+        total=subtotal*iva;
+        subtotalPedido.textContent="El subtotal(SIN IVA) es de: " + subtotal;
+        totalPedido.textContent="El total fue de: " + total;
+
+        div.appendChild(subtotalPedido);
+        div.appendChild(totalPedido);
+
+    }
+    
+} */
 /* 
 
 function obtenerDatos(){
