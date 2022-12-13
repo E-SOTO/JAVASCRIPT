@@ -5,6 +5,7 @@ class Producto{
     }
 }
 
+//Variables
 const productos=[];
 let nombre;
 let cantidad;
@@ -12,20 +13,29 @@ let subtotal=0;
 let total=0;
 const iva=1.16; //El tax(IVA) en México es del 16%
 
+//Se selecciona el formulario principal
 const formulario= document.querySelector('.formulario');
 
+//Despues del submit del formulario principal se realiza lo siguiente
 formulario.addEventListener('submit',(evt)=>{
+    //Previene error
     evt.preventDefault();
+    //Obtenemos el nombre del usuario del formulario principal
     nombre=document.getElementById("inputName").value;
+    //Obtenemos la cantidad de elementos vendidos del formulario principal
     cantidad=document.getElementById("inputCantidad").value;
+
     let products;
 
     console.log(nombre);
     console.log(cantidad);
-
+    
+    //Seleccionamos el div principal
     let div=document.querySelector('.divProductos');
 
+    //Creamos un H3
     let h3Nombre=document.createElement("h3");
+    //Le damos un texto al Div
     h3Nombre.textContent="Hola " + nombre;
 
     /*Formulario de productos*/
@@ -38,15 +48,26 @@ formulario.addEventListener('submit',(evt)=>{
     const formularioFinal =document.querySelector(".formProductos");
     formularioFinal.addEventListener("submit",(evt)=>{
         evt.preventDefault();
-        obtenerDatos(cantidad,div);
+        dato=obtenerDatos(cantidad,div);
+        dato !==null && muchasGracias();
     })
    
     /* imprimirDatos(products,div) */
-
+    
      let hey=document.body;
     console.log(hey);
 })
 
+//Mensaje de gracias por la venta
+function muchasGracias(){
+    Swal.fire({
+        icon: 'success',
+        title: '¡Listo!',
+        text: 'Muchas gracias por tu venta'
+      })
+}
+
+//Crear formulario de productos
 function crearFormProductos(cantidad,formProductos){
     for(let i=1;i<=cantidad;i++){
         let divProducto=document.createElement("div");
@@ -92,6 +113,7 @@ function crearFormProductos(cantidad,formProductos){
 
 }
 
+//Obtener datos
 function obtenerDatos(cantidad,div){
     //Declaración de variables
     let precio;
@@ -103,9 +125,14 @@ function obtenerDatos(cantidad,div){
             nombreProducto=document.getElementById("inputProducto" + i).value;
             precio=Number(document.getElementById("inputPrice" + i).value);
             if(isNaN(precio)){
-                let alerta=document.createElement("h3");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Eso no es un número :(',
+                    text: "El precio del producto "
+                })
+                /* let alerta=document.createElement("h3");
                 alerta.textContent="El precio del producto " + i + " no es una cifra, Intenta de nuevo";
-                div.appendChild(alerta);
+                div.appendChild(alerta); */
                 return null;
             }else{
                 x=true;
