@@ -14,16 +14,27 @@ let total=0;
 const iva=1.16; //El tax(IVA) en México es del 16%
 
 const ultimosVendidos= ()=>{
-    fetch(localStorage.getItem('productos'))
-    .then((respuesta)=>{
-        return respuesta.json();
-    })
-    .then((datos)=>{
-        console.log(datos);
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
+    //Obtengo los productos guardados en la localStorage
+    let productosRecientes= JSON.parse(localStorage.getItem('productos'));
+    //Selecciona la lista de la card de productos
+    const cardItems=document.querySelector('.cardItems');
+    if (productosRecientes !== null || undefined){
+        
+        
+        //Se agrega los productos a la card
+        productosRecientes.forEach(producto=>{
+            let item=document.createElement("li");
+            item.classList.add('list-group-item');
+            item.textContent=`${producto.nombre} ------${producto.precio}`;
+            cardItems.appendChild(item);
+        })
+    }else{
+        let item=document.createElement("li");
+        item.classList.add('list-group-item');
+        item.textContent="Aún no hay items vendidos";
+        cardItems.appendChild(item);
+    }
+
 }
 
 ultimosVendidos();
@@ -155,11 +166,12 @@ function obtenerDatos(cantidad,div){
         }while(x != true);    
         productos.push(new Producto(nombreProducto,precio));
     }
-    let resultado=document.createElement("h4");
+    
     let totalPedido=document.createElement("h4");
     let subtotalPedido=document.createElement("h4");
                 
     productos.forEach(producto=>{
+        let resultado=document.createElement("h4");
         subtotal=subtotal+producto.precio;
         resultado.textContent=`${producto.nombre} tuvo un precio de: ${producto.precio}`;
         div.appendChild(resultado);
