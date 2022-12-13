@@ -74,8 +74,9 @@ formulario.addEventListener('submit',(evt)=>{
     const formularioFinal =document.querySelector(".formProductos");
     formularioFinal.addEventListener("submit",(evt)=>{
         evt.preventDefault();
+        let numero = Math.floor(Math.random() * 1000);
         dato=obtenerDatos(cantidad,div);
-        dato !==null && muchasGracias();
+        dato !==null && obtenerImagenRandom(numero);
     })
    
     /* imprimirDatos(products,div) */
@@ -83,15 +84,6 @@ formulario.addEventListener('submit',(evt)=>{
      let hey=document.body;
     console.log(hey);
 })
-
-//Mensaje de gracias por la venta
-function muchasGracias(){
-    Swal.fire({
-        icon: 'success',
-        title: '¡Listo!',
-        text: 'Muchas gracias por tu venta'
-      })
-}
 
 //Crear formulario de productos
 function crearFormProductos(cantidad,formProductos){
@@ -144,7 +136,7 @@ function obtenerDatos(cantidad,div){
     //Declaración de variables
     let precio;
     let nombreProducto;
-
+    
     for(let i=1;i<=cantidad;i++){
         let x=false;
         do{
@@ -188,6 +180,39 @@ function obtenerDatos(cantidad,div){
 
 
 }
+
+//Obtener el link de una imagen
+const obtenerImagenRandom = (number)=>{
+    fetch('https://picsum.photos/id/' + number + "/info")
+    .then((respuesta)=>{
+        return respuesta.json();
+    })
+    .then((datos)=>{
+        render(datos.download_url);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+}
+
+//Renderizar la imagen y enviar mensaje de gracias
+const render = (imagen) =>{
+    muchasGracias(imagen);
+}
+
+//Mensaje de gracias por la venta
+function muchasGracias(link){
+    Swal.fire({
+        icon: 'success',
+        title: '¡Listo!',
+        text: 'Muchas gracias por tu venta',
+        imageUrl: `${link}`,
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
+      })
+}
+
 
 /* function imprimirDatos(productos,div){
     if(productos == null){
