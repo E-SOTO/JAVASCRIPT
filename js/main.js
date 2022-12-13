@@ -13,8 +13,23 @@ let subtotal=0;
 let total=0;
 const iva=1.16; //El tax(IVA) en México es del 16%
 
+const ultimosVendidos= ()=>{
+    fetch(localStorage.getItem('productos'))
+    .then((respuesta)=>{
+        return respuesta.json();
+    })
+    .then((datos)=>{
+        console.log(datos);
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+}
+
+ultimosVendidos();
+
 //Se selecciona el formulario principal
-const formulario= document.querySelector('.formulario');
+const formulario=document.querySelector('.formulario');
 
 //Despues del submit del formulario principal se realiza lo siguiente
 formulario.addEventListener('submit',(evt)=>{
@@ -158,6 +173,8 @@ function obtenerDatos(cantidad,div){
 
     const guardarProductosLocal =JSON.stringify(productos);
     localStorage.setItem('productos',guardarProductosLocal);
+
+
 }
 
 /* function imprimirDatos(productos,div){
